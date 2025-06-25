@@ -376,8 +376,8 @@
         
         <div class="plan-toggle">
             <div class="toggle-container">
-                <div class="toggle-option active" id="scaleToggle" onclick="goScale()">Scale Plan</div>
-                <div class="toggle-option" id="enterpriseToggle" onclick="goEnterprise()">Enterprise Plan</div>
+                <div class="toggle-option active" id="scaleToggle">Scale Plan</div>
+                <div class="toggle-option" id="enterpriseToggle">Enterprise Plan</div>
             </div>
         </div>
         
@@ -390,12 +390,12 @@
             <div class="input-section">
                 <div class="input-group">
                     <label for="users">Number of Users</label>
-                    <input type="number" id="users" min="10" max="100" step="10" value="10" onchange="calc()">
+                    <input type="number" id="users" min="10" max="100" step="10" value="10">
                 </div>
 
                 <div class="checkbox-section">
                     <div class="checkbox-wrapper">
-                        <input type="checkbox" id="nonprofitDiscount" onchange="calc()">
+                        <input type="checkbox" id="nonprofitDiscount">
                         <div class="checkbox-content">
                             <div class="checkbox-label">Non-Profit Discount (20% off)</div>
                             <div class="services-list">
@@ -407,7 +407,7 @@
                 
                 <div class="checkbox-section scale-only" id="professionalServicesSection">
                     <div class="checkbox-wrapper">
-                        <input type="checkbox" id="professionalServices" onchange="calc()">
+                        <input type="checkbox" id="professionalServices">
                         <div class="checkbox-content">
                             <div class="checkbox-label">Add Professional Services ($1,998.00 one-time)</div>
                             <div class="services-list">
@@ -452,7 +452,7 @@
                     <div class="price-card enterprise-only">
                         <div class="price-label" id="monthly3YearLabel">Monthly (3-Year Reference)</div>
                         <div class="price-value" id="monthly3Year">$80.00</div>
-                        <div class="discount-badge" id="discountBadge">Save $19/month (19%)</div>
+                        <div class="discount-badge" id="discountBadge">Save $200/month (16.7%)</div>
                         <div class="nonprofit-discount-badge" id="threeYearNonprofitBadge" style="display: none;">Non-profit: 20% off</div>
                         <div class="enterprise-warning enterprise-only">
                             ⚠️ Reference only - Enterprise requires yearly commitment
@@ -507,8 +507,51 @@
     </div>
 
 <script>
+// Global variables
 var plan = 'scale';
 
+// Corrected enterprise pricing from Excel file
+var enterprisePrices = {
+    100: {yearly: 14400, threeYear: 36000},
+    125: {yearly: 16200, threeYear: 40500},
+    150: {yearly: 18000, threeYear: 45000},
+    175: {yearly: 19800, threeYear: 49500},
+    200: {yearly: 21600, threeYear: 54000},
+    225: {yearly: 23400, threeYear: 58500},
+    250: {yearly: 25200, threeYear: 63000},
+    275: {yearly: 27000, threeYear: 67500},
+    300: {yearly: 28800, threeYear: 72000},
+    325: {yearly: 30600, threeYear: 76500},
+    350: {yearly: 32400, threeYear: 81000},
+    375: {yearly: 34200, threeYear: 85500},
+    400: {yearly: 36000, threeYear: 90000},
+    425: {yearly: 37800, threeYear: 94500},
+    450: {yearly: 39600, threeYear: 99000},
+    475: {yearly: 41400, threeYear: 103500},
+    500: {yearly: 43200, threeYear: 108000},
+    525: {yearly: 44100, threeYear: 110250},
+    550: {yearly: 45000, threeYear: 112500},
+    575: {yearly: 45900, threeYear: 114750},
+    600: {yearly: 46800, threeYear: 117000},
+    625: {yearly: 47700, threeYear: 119250},
+    650: {yearly: 48600, threeYear: 121500},
+    675: {yearly: 49500, threeYear: 123750},
+    700: {yearly: 50400, threeYear: 126000},
+    725: {yearly: 51300, threeYear: 128250},
+    750: {yearly: 52200, threeYear: 130500},
+    775: {yearly: 53100, threeYear: 132750},
+    800: {yearly: 54000, threeYear: 135000},
+    825: {yearly: 54900, threeYear: 137250},
+    850: {yearly: 55800, threeYear: 139500},
+    875: {yearly: 56700, threeYear: 141750},
+    900: {yearly: 57600, threeYear: 144000},
+    925: {yearly: 58500, threeYear: 146250},
+    950: {yearly: 59400, threeYear: 148500},
+    975: {yearly: 60300, threeYear: 150750},
+    1000: {yearly: 61200, threeYear: 153000}
+};
+
+// Switch to Scale Plan
 function goScale() {
     plan = 'scale';
     document.getElementById('scaleToggle').className = 'toggle-option active';
@@ -534,6 +577,7 @@ function goScale() {
     calc();
 }
 
+// Switch to Enterprise Plan
 function goEnterprise() {
     plan = 'enterprise';
     document.getElementById('scaleToggle').className = 'toggle-option';
@@ -559,10 +603,7 @@ function goEnterprise() {
     calc();
 }
 
-var enterprisePrices = {
-    100: {yearly: 14400, threeYear: 36000}, 125: {yearly: 16200, threeYear: 40500}, 150: {yearly: 18000, threeYear: 45000}, 175: {yearly: 19800, threeYear: 49500}, 200: {yearly: 21600, threeYear: 54000}, 225: {yearly: 23400, threeYear: 58500}, 250: {yearly: 25200, threeYear: 63000}, 275: {yearly: 27000, threeYear: 67500}, 300: {yearly: 28800, threeYear: 72000}, 325: {yearly: 30816, threeYear: 77040}, 350: {yearly: 32616, threeYear: 81540}, 375: {yearly: 34416, threeYear: 86040}, 400: {yearly: 36216, threeYear: 90540}, 425: {yearly: 38016, threeYear: 95040}, 450: {yearly: 39816, threeYear: 99540}, 475: {yearly: 41616, threeYear: 104040}, 500: {yearly: 43416, threeYear: 108540}, 525: {yearly: 44316, threeYear: 110790}, 550: {yearly: 45216, threeYear: 113040}, 575: {yearly: 46116, threeYear: 115290}, 600: {yearly: 47016, threeYear: 117540}, 625: {yearly: 47916, threeYear: 119790}, 650: {yearly: 48816, threeYear: 122040}, 675: {yearly: 49716, threeYear: 124290}, 700: {yearly: 50616, threeYear: 126540}, 725: {yearly: 51516, threeYear: 128790}, 750: {yearly: 52416, threeYear: 131040}, 775: {yearly: 53316, threeYear: 133290}, 800: {yearly: 54216, threeYear: 135540}, 825: {yearly: 55116, threeYear: 137790}, 850: {yearly: 56016, threeYear: 140040}, 875: {yearly: 56916, threeYear: 142290}, 900: {yearly: 57816, threeYear: 144540}, 925: {yearly: 58716, threeYear: 146790}, 950: {yearly: 59616, threeYear: 149040}, 975: {yearly: 60516, threeYear: 151290}, 1000: {yearly: 61416, threeYear: 153540}
-};
-
+// Get enterprise price with interpolation
 function getEnterprisePrice(users) {
     if (enterprisePrices[users]) {
         return enterprisePrices[users];
@@ -584,7 +625,7 @@ function getEnterprisePrice(users) {
         };
     }
     
-    var keys = [100,125,150,175,200,225,250,275,300,325,350,375,400,425,450,475,500,525,550,575,600,625,650,675,700,725,750,775,800,825,850,875,900,925,950,975,1000];
+    var keys = Object.keys(enterprisePrices).map(Number).sort((a, b) => a - b);
     var lower = 100;
     var upper = 1000;
     
@@ -606,6 +647,7 @@ function getEnterprisePrice(users) {
     };
 }
 
+// Main calculation function
 function calc() {
     var users = parseInt(document.getElementById('users').value) || 10;
     var nonprofit = document.getElementById('nonprofitDiscount').checked;
@@ -625,14 +667,22 @@ function calc() {
             monthly = (149 + extra * 15) * mult;
             yearly = ((99 + extra * 10) * 12) * mult;
         }
-        var rate = users === 70 ? 8.5 : 8;
-        threeYear = (users * rate * 36) * mult;
+        // Special handling for 70 users with $8.50 rate
+        if (users === 70) {
+            threeYear = (users * 8.5 * 36) * mult;
+        } else {
+            threeYear = (users * 8 * 36) * mult;
+        }
     } else {
         var pricing = getEnterprisePrice(users);
         yearly = pricing.yearly * mult;
         threeYear = pricing.threeYear * mult;
+        
+        // Calculate monthly for display (Enterprise doesn't have true monthly pricing)
+        monthly = 0; // Enterprise has no monthly option
     }
     
+    // Update the displays
     document.getElementById('monthlyPlan').innerHTML = '$' + monthly.toFixed(2);
     document.getElementById('monthlyYearly').innerHTML = '$' + (yearly/12).toFixed(2);
     document.getElementById('monthly3Year').innerHTML = '$' + (threeYear/36).toFixed(2);
@@ -640,6 +690,30 @@ function calc() {
     document.getElementById('threeYearTotal').innerHTML = '$' + threeYear.toLocaleString();
     document.getElementById('monthlyPlanTotal').innerHTML = '$' + (monthly * 12).toLocaleString();
     
+    // Calculate and display the correct discount for Enterprise 3-year vs yearly
+    if (plan === 'enterprise') {
+        var monthlyFromYearly = yearly / 12;
+        var monthlyFrom3Year = threeYear / 36;
+        var savingsPerMonth = monthlyFromYearly - monthlyFrom3Year;
+        var discountPercent = (savingsPerMonth / monthlyFromYearly) * 100;
+        
+        document.getElementById('discountBadge').innerHTML = 'Save $' + Math.round(savingsPerMonth) + '/month (' + discountPercent.toFixed(1) + '%)';
+    }
+    
+    // Update comparison messages
+    if (plan === 'scale') {
+        var monthlyTotalCost = monthly * 12;
+        var savingsVsMonthly = monthlyTotalCost - yearly;
+        document.getElementById('monthlyComparison').innerHTML = '$' + savingsVsMonthly.toLocaleString() + ' more than yearly';
+    }
+    
+    // Update 3-year savings badge
+    var yearlyOver3Years = yearly * 3;
+    var savingsOver3Years = yearlyOver3Years - threeYear;
+    var savingsPercent = (savingsOver3Years / yearlyOver3Years) * 100;
+    document.getElementById('totalSavings').innerHTML = 'Save $' + savingsOver3Years.toLocaleString() + ' over 3 years (' + savingsPercent.toFixed(0) + '%)';
+    
+    // Show/hide nonprofit badges
     var badges = ['monthlyNonprofitBadge', 'yearlyNonprofitBadge', 'threeYearNonprofitBadge', 'monthlyTotalNonprofitBadge', 'yearlyTotalNonprofitBadge', 'threeYearTotalNonprofitBadge', 'servicesNonprofitBadge'];
     for (var i = 0; i < badges.length; i++) {
         var badge = document.getElementById(badges[i]);
@@ -648,6 +722,7 @@ function calc() {
         }
     }
     
+    // Professional services handling
     var servicesPrice = 1998 * mult;
     document.getElementById('professionalServicesPrice').innerHTML = '$' + servicesPrice.toFixed(2);
     
@@ -666,7 +741,25 @@ function calc() {
     }
 }
 
-calc();
+// Event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    // Add event listeners for toggles
+    document.getElementById('scaleToggle').addEventListener('click', goScale);
+    document.getElementById('enterpriseToggle').addEventListener('click', goEnterprise);
+    
+    // Add event listeners for inputs
+    document.getElementById('users').addEventListener('change', calc);
+    document.getElementById('nonprofitDiscount').addEventListener('change', calc);
+    document.getElementById('professionalServices').addEventListener('change', calc);
+    
+    // Initialize the calculator
+    calc();
+});
+
+// Initialize immediately if DOM is already loaded
+if (document.readyState !== 'loading') {
+    calc();
+}
 </script>
 </body>
 </html>
